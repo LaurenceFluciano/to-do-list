@@ -1,0 +1,15 @@
+@media (max-width: 1000px) {
+    .container .dropzone {
+        width: 100%; 
+        margin-top: 20px; 
+        padding: 5%;
+    }
+
+    .container{
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+    .mobile {
+        display: flex;
+    }
+}

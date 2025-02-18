@@ -1,0 +1,14 @@
+@media (max-width: 1224px)  {
+    .container .dropzone {
+        width: calc(95%/3);
+    }
+
+    
+    .container {
+        gap: 5px;
+    }
+
+    .container .dropzone{
+        min-height: 500px;
+    }
+}
