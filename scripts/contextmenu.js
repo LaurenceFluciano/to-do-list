@@ -1,5 +1,4 @@
 let closest_card = null;
-let copiedText = "";
 
 function contextMenuEvent(elements){
     elements.container.addEventListener('contextmenu', (event) => {
