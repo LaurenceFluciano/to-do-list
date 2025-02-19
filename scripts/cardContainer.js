@@ -10,7 +10,7 @@ function handleCardContainer(allElements){
     const editableTitles = container.querySelectorAll(".component-title"); 
     limitTitle(40, editableTitles);
 
-    moveCardToBottom(dropzones)
+    handlerArrowEvent(dropzones)
 }
 
 function arrowDropHandler() {
@@ -60,57 +60,51 @@ function handleMouseEnterAndOutInCard(){
     });
 }
 
-function moveCardToBottom(dropzones){
+function handlerArrowEvent(dropzones){
     document.querySelectorAll(".arrowMove").forEach(arrowMove => {
-        arrowMove.removeEventListener("click", (event) => { moveContent(event,arrowMove,dropzones) } );
-        arrowMove.addEventListener(   "click", (event) => { moveContent(event,arrowMove,dropzones) } );
+        arrowMove.removeEventListener("click", (event) => { handleMoveCard(event,arrowMove,dropzones) } );
+        arrowMove.addEventListener(   "click", (event) => { handleMoveCard(event,arrowMove,dropzones) } );
     });
 }
 
-function moveContent(event, arrowMove, dropzones){
-    let currentCard= arrowMove.getAttribute("data-current-dropzone")
-    let id = arrowMove.getAttribute("data-id")
+function handleMoveCard(event, arrowMove, dropzones) {
+    const card = event.target.closest(".cards"); 
+    const attributeCard = card.getAttribute("data-current-dropzone");
+    const id = arrowMove.getAttribute("data-id"); 
 
-    const card = event.target.closest(".cards");
-    if (!card) return;
+    const arrayDropzones = Array.from(dropzones); 
+    let currentIndex = findCurrentDropzoneIndex(attributeCard, arrayDropzones);
+    let nextIndex = getNextIndex(id, currentIndex, arrayDropzones); 
 
-    
-        if(id == "down"){
-            if (dropzones[0].id == currentCard) {
-                arrowMove.removeAttribute("data-current-dropzone")
-                arrowMove.setAttribute("data-current-dropzone",dropzones[1].id)
-                moveToOtherDropzone(dropzones[1],card)
-            }
-            if (dropzones[1].id == currentCard) {
-                arrowMove.removeAttribute("data-current-dropzone")
-                arrowMove.setAttribute("data-current-dropzone",dropzones[2].id)
-                moveToOtherDropzone(dropzones[2],card)
-            }
-            if (dropzones[2].id == currentCard) {
-                arrowMove.removeAttribute("data-current-dropzone")
-                arrowMove.setAttribute("data-current-dropzone",dropzones[0].id)
-                moveToOtherDropzone(dropzones[0],card)
-            }
-        } else {
-            if (dropzones[0].id == currentCard) {
-                arrowMove.removeAttribute("data-current-dropzone")
-                arrowMove.setAttribute("data-current-dropzone",dropzones[2].id)
-                moveToOtherDropzone(dropzones[2],card)
-            }
-            if (dropzones[1].id == currentCard) {
-                arrowMove.removeAttribute("data-current-dropzone")
-                arrowMove.setAttribute("data-current-dropzone",dropzones[0].id)
-                moveToOtherDropzone(dropzones[0],card)
-              
-            }
-            if (dropzones[2].id == currentCard) {
-                arrowMove.removeAttribute("data-current-dropzone")
-                arrowMove.setAttribute("data-current-dropzone",dropzones[1].id)
-                moveToOtherDropzone(dropzones[1],card)
-            }
-        }
+
+    card.setAttribute("data-current-dropzone", arrayDropzones[nextIndex].id); 
+
+    moveToOtherDropzone(arrayDropzones[nextIndex], card);
 }
 
-function moveToOtherDropzone(next_dropzone, card){
-    next_dropzone.appendChild(card)
+function moveToOtherDropzone(next_dropzone, card) {
+    next_dropzone.appendChild(card); 
+}
+
+function findCurrentDropzoneIndex(attributeCard, arrayDropzones) {
+    let currentIndex = -1;
+    for (let i = 0; i < arrayDropzones.length; i++) {
+        if (arrayDropzones[i].id === attributeCard) {
+            currentIndex = i;
+            break;
+        }
+    }
+    if (currentIndex === -1) return; 
+    return currentIndex; 
+}
+
+function getNextIndex(id, currentIndex, arrayDropzones) {
+    let nextIndex = id === "down" ? currentIndex + 1 : currentIndex - 1; // Calcula o índice da próxima zona
+    
+    if (nextIndex < 0) {
+        nextIndex = arrayDropzones.length - 1;
+    } else if (nextIndex >= arrayDropzones.length) {
+        nextIndex = 0;
+    }
+    return nextIndex; 
 }

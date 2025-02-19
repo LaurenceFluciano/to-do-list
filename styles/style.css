@@ -159,6 +159,18 @@ body {
 }
 
 .container .dropzone .cards .components .footer-component .arrowMove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px; 
+    width: 40px; 
+    height: 40px; 
+    background-color: var(--color-context-menu-bg);
+    margin-right: 0.2rem;
+    margin-left: 0.2rem;
+}
+
+.container .dropzone .cards .components .footer-component .arrowMove:hover {
     border-radius: 8px; 
     width: 40px; 
     height: 40px; 

@@ -8,7 +8,9 @@ function dragAndDropMethods() {
                 }
                 this.classList.add("dragging"); 
             },
-            dragEnd: function() { this.classList.remove("dragging"); },
+            dragEnd: function() { 
+                this.classList.remove("dragging"); 
+            },
             dragOver: function(event) { 
                 event.preventDefault();
                 this.classList.add("drag-over");
@@ -20,8 +22,11 @@ function dragAndDropMethods() {
                 event.preventDefault();
                 this.classList.remove("drag-over");
 
-                const draggingElement = document.querySelector('.dragging');
-                if (draggingElement) this.appendChild(draggingElement);
+                const cardDraggingElement = document.querySelector('.dragging');
+                if (cardDraggingElement) { 
+                    cardDraggingElement.setAttribute("data-current-dropzone", this.id);
+                    this.appendChild(cardDraggingElement);
+                }
             }
         }
     };

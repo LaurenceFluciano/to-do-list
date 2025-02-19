@@ -6,11 +6,7 @@ function contextMenuEvent(elements){
         event.preventDefault(); 
         removeAttributeCard()
         showCustomContextMenu(event, elements.menu);
-
-        closest_card = event.target.closest(".cards")
-        if (closest_card) {
-            closest_card.setAttribute('data-id','on__card')
-        }
+        createAttributeOn__Card(event)
     });
 
     elements.container.addEventListener('click', () => {
@@ -47,6 +43,7 @@ const contextMenu_handleClicks = {
         const card = document.createElement("div");
         card.classList.add("cards");
         card.setAttribute("draggable", "true");
+        card.setAttribute("data-current-dropzone","to-do");
         
 
         const components = document.createElement("div");
@@ -67,8 +64,8 @@ const contextMenu_handleClicks = {
                 <span class="input-component"><p contenteditable="true" class="p">Something to do</p></span>
             </div>
             <div class="footer-component mobile">
-                <span class="arrowMove material-symbols-outlined" data-id="down" data-current-dropzone="to-do" >arrow_downward</span>
-                <span class="arrowMove material-symbols-outlined" data-id="up" data-current-dropzone="to-do"   >arrow_upward</span>
+                <span class="arrowMove material-symbols-outlined" data-id="down" >arrow_downward</span>
+                <span class="arrowMove material-symbols-outlined" data-id="up"   >arrow_upward</span>
             </div>
         `;
 
@@ -80,7 +77,7 @@ const contextMenu_handleClicks = {
                 return;
             }
         })
-
+        hideCustomContextMenu(menu)
         update()
     },
     copyCard: (menu) =>{
@@ -99,16 +96,11 @@ const contextMenu_handleClicks = {
             console.warn("Nenhum card encontrado para copiar.");
         }
     },
-    copy: (menu) =>{
-        console.warn("Deve ser implementado!")
-    },
-    paste: (menu) => {
-        console.warn("Deve ser implementado!")
-    },
     removeCard: (menu) =>{
-        const cardToRemove = document.querySelector(`[data-id='on__card']`); // Encontra o cartão com esse ID
+        const cardToRemove = document.querySelector(`[data-id='on__card']`);
         if (cardToRemove) {
-            cardToRemove.remove(); // Remove o cartão do DOM
+            cardToRemove.remove();
+            hideCustomContextMenu(menu)
         }
     }
 }
@@ -117,5 +109,12 @@ function removeAttributeCard(){
     if (closest_card) {
         delete closest_card.dataset.id
         closest_card = null;
+    }
+}
+
+function createAttributeOn__Card(event){
+    closest_card = event.target.closest(".cards")
+    if (closest_card) {
+        closest_card.setAttribute('data-id','on__card')
     }
 }
